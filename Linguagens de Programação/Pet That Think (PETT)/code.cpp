@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <windows.h>
+// #include <clocale> - Acento BR - deu ERRO no Windows
 
 // Representação de Objetos do IRD (Atributos e Métodos)
 
@@ -33,8 +35,8 @@ class RobotDog {
     // Atributos de Estados do Robô (Tabela de Memória)
     private:
         int height{32};
-        int weight{6.3};
-        double energySupply{100.};
+        double weight{6.3};
+        double energySupply{90.};
         Mouth mouth;                // Componente - Objeto Interno
 
     // Métodos da Rotina Diária (Daily Routine)
@@ -44,8 +46,45 @@ class RobotDog {
             std::cout << "[IRD] Acordando e ligando sistemas...\n";
         }
 
+        void sleep() {
+            std::cout << "[IRD] Entrando em modo repouso (Sleep)...\n\n";
+        }
+
         // Simulação de Evento (Pavlov Event)
         void seeFood(const std::string& food) {
-            
+            std::cout << "\n--- EVENTO: Visão de Comida (" << food << ") ---\n";
+            mouth.triggerDrool();  // Causa e Efeito
+            mouth.eat(food);
+            energySupply = std::min(100., energySupply + 15.);
         }
+
+        void displayStatus() const {
+            std::cout << "\n[STATUS IRD] Energia: " << energySupply
+                        << "% | Peso: " << weight << "kg.\n";
+        }
+};
+
+int main() {
+
+    // Configura o Terminal para o idioma padrão do Sistema (Português)
+    // std::setlocale(LC_ALL, "Portuguese");
+
+    // Configura a saída do console para UTF-8
+    SetConsoleOutputCP(CP_UTF8);
+
+    std::cout << "\n=== PROJETO PETT: INICIALIZANDO IRD ===\n\n";
+
+    RobotDog myDog;
+
+    // Execução Sequencial do Programa (Program Flow)
+    myDog.wake();
+    myDog.displayStatus();
+    
+    // Disparo de Evento Externo
+    myDog.seeFood("Pizza");
+
+    myDog.displayStatus();
+    myDog.sleep();
+
+    return 0;
 }
