@@ -1,0 +1,3 @@
+g++ main.cpp Produto.cpp -o programa
+
+./programa
